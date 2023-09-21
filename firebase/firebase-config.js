@@ -5,8 +5,16 @@ import {
 	getDownloadURL,
 	getStorage,
 	ref,
+	updateMetadata,
 	uploadBytes,
 } from "firebase/storage";
+
+import {
+	getAuth,
+	GoogleAuthProvider,
+	setPersistence,
+	browserSessionPersistence,
+} from "firebase/auth";
 
 import {
 	addDoc,
@@ -46,7 +54,18 @@ export const uploadDocument = async ({
 			`documents/${file.name}`
 		);
 
-		const snapshot = await uploadBytes(storageRef, file);
+		await uploadBytes(storageRef, file);
+
+		const documentMetaData = {
+			title,
+			description,
+			category,
+		};
+
+		await updateMetadata(storageRef, {
+			customMetadata: documentMetaData,
+		});
+
 		const downloadURL = await getDownloadURL(storageRef);
 
 		const documentData = {
@@ -70,3 +89,8 @@ export const uploadDocument = async ({
 		throw error;
 	}
 };
+
+// setPersistence(auth, browserSessionPersistence);
+
+export const auth = getAuth(app);
+export const provider = new GoogleAuthProvider();
