@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { NavLink } from "react-router-dom";
 import {
 	FaCloudUploadAlt,
@@ -6,17 +7,21 @@ import {
 } from "react-icons/fa";
 import { BsPersonFillAdd } from "react-icons/bs";
 import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
 
-export const Header = () => {
+const Header = () => {
 	const { user } = useAuth();
-	const { displayName } = user ?? {
-		displayName: "anonymous user",
+	const { displayName, photoURL } = user || {
+		displayName: "guest",
 	};
+	const [isOpen, setIsOpen] = useState(false);
 
-	const initials = displayName
-		.split(" ")
-		.map((name) => name[0].toUpperCase())
-		.join("");
+	const handleMouseEnters = () => {
+		setIsOpen(true);
+	};
+	const handleMouseLeave = () => {
+		setIsOpen(false);
+	};
 
 	return (
 		<header className="header">
@@ -28,12 +33,29 @@ export const Header = () => {
 
 				<NavLink
 					to="/profile"
-					className={({ isActive }) =>
-						isActive ? "active" : ""
-					}
+					className="user-profile-link"
+					onMouseEnter={handleMouseEnters}
+					onMouseLeave={handleMouseLeave}
 				>
 					<div className="user-profile">
-						<p className="profile-initials">{initials}</p>
+						{user ? (
+							<img
+								src={photoURL}
+								className="user-profile"
+								alt="user-profile-icon"
+							/>
+						) : (
+							<div className="profile-initials">
+								{getInitials(displayName)}
+							</div>
+						)}
+						{/* <div
+						className={`initial-tooltip ${
+							isOpen ? "show" : ""
+						}`}
+					>
+						{displayName.split(' ')[0]}
+					</div> */}
 					</div>
 				</NavLink>
 			</div>
@@ -58,7 +80,12 @@ export const Header = () => {
 	);
 };
 
-// Custom NavItem component for NavLink
+const getInitials = (name) =>
+	name
+		.split(" ")
+		.map((word) => word[0].toUpperCase())
+		.join("");
+
 const NavItem = ({ to, icon }) => (
 	<li>
 		<NavLink
@@ -71,3 +98,5 @@ const NavItem = ({ to, icon }) => (
 		</NavLink>
 	</li>
 );
+
+export { Header };

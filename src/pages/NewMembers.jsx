@@ -1,3 +1,3 @@
 export const NewMembers = () => {
-	return <div>NewMembers</div>;
+	return <div>...WIP...</div>;
 };

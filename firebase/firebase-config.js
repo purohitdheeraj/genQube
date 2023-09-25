@@ -38,9 +38,8 @@ const storage = getStorage(app);
 const db = getFirestore(app);
 const docsCollection = collection(db, "documents");
 
-// const storageRef = ref(storage);
-
-export { storage };
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 export const uploadDocument = async ({
 	file,
@@ -68,14 +67,16 @@ export const uploadDocument = async ({
 
 		const downloadURL = await getDownloadURL(storageRef);
 
+		const user = auth?.currentUser;
+
 		const documentData = {
+			userId: user.uid,
 			title,
 			description,
 			category,
 			downloadURL,
 		};
 
-		console.log("document data", documentData);
 		const docRef = await addDoc(
 			docsCollection,
 			documentData
@@ -90,7 +91,4 @@ export const uploadDocument = async ({
 	}
 };
 
-// setPersistence(auth, browserSessionPersistence);
-
-export const auth = getAuth(app);
-export const provider = new GoogleAuthProvider();
+export { storage, auth, provider, docsCollection };

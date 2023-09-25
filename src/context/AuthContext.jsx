@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-	console.log("from context", user);
+	// console.log("from context", user);
 
 	async function signUpWithGoogle() {
 		try {

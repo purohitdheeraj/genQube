@@ -111,7 +111,7 @@ export const UploadDocument = () => {
 					</select>
 				</div>
 				<div className="form-group">
-					<button type="submit">Upload Document</button>
+					<button className="btn-upload-doc" type="submit">Upload Document</button>
 				</div>
 			</form>
 		</div>
