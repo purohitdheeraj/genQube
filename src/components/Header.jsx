@@ -28,7 +28,7 @@ const Header = () => {
 			<div className="sub-header-one">
 				<div className="nav-heading">
 					<FaDochub size="2em" className="doc-icon" />
-					ocQube
+					ocsQube
 				</div>
 
 				<NavLink
